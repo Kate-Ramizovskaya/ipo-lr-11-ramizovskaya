@@ -26,6 +26,7 @@ def menu():
          if type_vehicle=="1":
             name=input("Введите название судна:")
             company.add_vehicle(Ship(capacity,name))
+             
          elif type_vehicle=="2":
             color=input("Введите цвет грузовика:")
             company.add_vehicle(Truck(capacity,color))
