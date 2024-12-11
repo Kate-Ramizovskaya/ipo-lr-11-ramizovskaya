@@ -1,30 +1,28 @@
-from .vehicle import Vehicle, Ship,Truck
-from .client import Client
-
 class TransportCompany:
     def __init__(self, name):
         self.name = name
-        self.vehicles = []
-        self.clients = []
+        self.vehicles = []  # Список транспортных средств
+        self.clients = []   # Список клиентов
 
     def add_vehicle(self, vehicle):
-        if isinstance(vehicle, Vehicle):
-            self.vehicles.append(vehicle)
-
-    def list_vehicles(self):
-        return [str(vehicle) for vehicle in self.vehicles]
+        self.vehicles.append(vehicle)
 
     def add_client(self, client):
-        if isinstance(client, Client):
-            self.clients.append(client)
+        self.clients.append(client)
 
-    def optimize_cargo_distribution(self):
-        vip_clients = sorted([client for client in self.clients if client.is_vip], key=lambda c: c.cargo_weight, reverse=True)
-        regular_clients = sorted([client for client in self.clients if not client.is_vip], key=lambda c: c.cargo_weight, reverse=True)
-        
-        all_clients = vip_clients + regular_clients
+    def distribute_cargo(self):
+        # Распределяем грузы между транспортными средствами
+        for client in self.clients:
+            remaining_cargo = client.cargo_weight
+            for vehicle in self.vehicles:
+                available_capacity = vehicle.capacity - vehicle.current_load
+                if available_capacity > 0:
+                    load_to_add = min(remaining_cargo, available_capacity)
+                    vehicle.current_load += load_to_add
+                    remaining_cargo -= load_to_add
 
-        for client in all_clients:
-            for vehicle in sorted(self.vehicles, key=lambda v: v.current_load):
-                if vehicle.load_cargo(client):
+                if remaining_cargo <= 0:
                     break
+
+            if remaining_cargo > 0:
+                print(f"Клиент {client.name} имеет необработанный груз: {remaining_cargo} тонн.")
