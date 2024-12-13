@@ -167,10 +167,10 @@ def show_vehicle_form():
         dpg.add_input_text(tag="vehicle_capacity", width=250)
 
         dpg.add_text("Введите название судна:", tag="name_ship", show=False)
-        dpg.add_input_text(tag="name_of_ship", width=250, show=False)
+        dpg.add_input_text(tag="name", width=250, show=False)
 
         dpg.add_text("Введите цвет фуры:", tag="color_truck", show=False)
-        dpg.add_input_text(tag="color_of_truck", width=250, show=False)
+        dpg.add_input_text(tag="color", width=250, show=False)
 
         dpg.add_button(label="Сохранить", callback=save_vehicle)
         dpg.add_button(label="Отмена", callback=lambda: dpg.delete_item("vehicle_form"))
@@ -178,14 +178,14 @@ def show_vehicle_form():
 def toggle_vehicle_specific_fields(sender, app_data):
     if app_data == "Корабль":
         dpg.configure_item("name_ship", show=True)
-        dpg.configure_item("name_of_ship", show=True)
+        dpg.configure_item("name", show=True)
         dpg.configure_item("color_truck", show=False)
-        dpg.configure_item("color_of_truck", show=False)
+        dpg.configure_item("color", show=False)
     elif app_data == "Фура":
         dpg.configure_item("name_ship", show=False)
-        dpg.configure_item("name_of_ship", show=False)
+        dpg.configure_item("name", show=False)
         dpg.configure_item("color_truck", show=True)
-        dpg.configure_item("color_of_truck", show=True)
+        dpg.configure_item("color", show=True)
 
 def save_vehicle():
     vehicle_type = dpg.get_value("vehicle_type")
@@ -194,14 +194,14 @@ def save_vehicle():
     if capacity and capacity.isdigit() and int(capacity) > 0:
         capacity = int(capacity)
         if vehicle_type == "Корабль":
-            name = dpg.get_value("name_ship")
+            name = dpg.get_value("name")
             if name:
                 vehicle = Ship(capacity, name)  # Создаём объект Ship
             else:
                 dpg.set_value("status", "Ошибка: Укажите название судна!")
                 return
         elif vehicle_type == "Фура":
-            color = dpg.get_value("color_truck")
+            color = dpg.get_value("color")
             if color:
                 vehicle = Truck(capacity, color)  # Создаём объект Truck
             else:
@@ -369,9 +369,7 @@ def main_window():
             with dpg.group():
                 dpg.add_text("Клиенты", tag="clients_text")
                 with dpg.table(tag="clients_table", header_row=True):
-                    dpg.add_table_column(label="Имя клиента")
-                    dpg.add_table_column(label="Вес груза")
-                    dpg.add_table_column(label="VIP статус")
+                    dpg
                 dpg.add_button(label="Добавить клиента", callback=show_client_form)
                 dpg.add_button(label="Показать всех клиентов", callback=show_all_clients)
                 dpg.add_button(label="Показать VIP клиентов", callback=show_authorized_clients)
@@ -380,10 +378,7 @@ def main_window():
             with dpg.group():
                 dpg.add_text("Транспортные средства", tag="vehicles_text")
                 with dpg.table(tag="vehicles_table", header_row=True):
-                    dpg.add_table_column(label="ID")
-                    dpg.add_table_column(label="Грузоподъемность")
-                    dpg.add_table_column(label="Текущая загрузка")
-                    dpg.add_table_column(label="Особенности")
+                    dpg
                 dpg.add_button(label="Добавить транспорт", callback=show_vehicle_form)
                 dpg.add_button(label="Распределить грузы", callback=distribute_cargo)
                 dpg.add_button(label="Показать все транспортные средства", callback=show_all_vehicles)
