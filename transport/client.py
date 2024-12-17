@@ -7,3 +7,4 @@ class Client():
             self.is_vip = is_vip
         else:
             raise ValueError("Вес груза должно быть положительным числом!")
+            
